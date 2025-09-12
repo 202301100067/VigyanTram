@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIH - Government Guidelines</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6fb;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #2f3c7e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 12px;
+      margin: 8px 0;
+      background: #39488f;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      transition: 0.3s;
+    }
+    .sidebar nav a:hover {
+      background: #a8d0e6;
+      color: #2f3c7e;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Topbar */
+    .topbar {
+      background: #fff;
+      padding: 15px 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar h1 {
+      font-size: 20px;
+      color: #2f3c7e;
+      margin: 0;
+    }
+    .profile {
+      font-weight: bold;
+      color: #2f3c7e;
+    }
+
+    /* Content Area */
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #2f3c7e;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table th, table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    table th {
+      background: #a8d0e6;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      margin-top: 15px;
+      background: #2f3c7e;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #70c1b3;
+    }
+
+    /* Footer */
+    footer {
+      background: #2f3c7e;
+      color: white;
+      padding: 8px;
+      text-align: center;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>VigyanTram</h2>
+    <nav>
+      <a href="/">Dashboard</a>
+      <a href="upload.html">Upload</a>
+      <a href="reports.html">Reports</a>
+      <a href="guidelines.html">Guidelines</a>
+      <a href="profile.html">Profile</a>
+      <a href="#">Logout</a>
+    </nav>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <h1>Government Guidelines</h1>
+      <div class="profile">Hello, Admin</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="card">
+        <h3>Mandatory Labelling Requirements</h3>
+        <table>
+          <tr><th>Requirement</th><th>Status</th></tr>
+          <tr><td>Product Name</td><td>✅ Required</td></tr>
+          <tr><td>Brand</td><td>✅ Required</td></tr>
+          <tr><td>Batch No.</td><td>✅ Required</td></tr>
+          <tr><td>Manufacturing Date</td><td>✅ Required</td></tr>
+          <tr><td>Expiry Date</td><td>✅ Required</td></tr>
+          <tr><td>MRP</td><td>✅ Required</td></tr>
+          <tr><td>ISI Mark</td><td>✅ Required</td></tr>
+          <tr><td>Customer Care Info</td><td>✅ Required</td></tr>
+        </table>
+        <a href="{{ url_for('download_guidelines') }}" class="btn">Download Guidelines</a>
+
+      </div>
+
+      <div class="card">
+        <h3>Additional Standards</h3>
+        <p>✔️ Must comply with FSSAI packaging and labelling standards.</p>
+        <p>✔️ Ensure recycling symbols and disposal instructions are present.</p>
+        <p>✔️ Transparency in water source and purification process required.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      &copy; 2025 VigyanTram | Smart India Hackathon | Developed by Team
+    </footer>
+  </div>
+</body>
+</html>
