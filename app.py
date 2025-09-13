@@ -1,23 +1,69 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, url_for
 from reportlab.pdfgen import canvas
 from io import BytesIO
-
 app = Flask(__name__)
 
-# Home / Dashboard
-@app.route("/")
+# -----------------------------
+# Dashboard / Home
+# -----------------------------
+@app.route("/dashboard")
 def dashboard():
-    extracted = {
-        "Name": "AquaFresh",
-        "Brand": "AquaPure Pvt Ltd",
-        "Expiry Date": "12/2026",
-        "Batch No": "B12345"
+    return render_template("dashboard.html")
+
+# -----------------------------
+# Export PDF route
+# -----------------------------
+@app.route("/download_report")
+def download_report():
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    pdf.setTitle("Product Report")
+
+    # Sample product details (you can pass dynamic data here)
+    product = {
+        "Name": "MB Whey",
+        "Brand": "MuscleBoost",
+        "Expiry": "12/12/2026",
+        "MRP": "₹1,499",
+        "Manufacturer": "MuscleBoost Pvt. Ltd.",
+        "Customer Care": "1800-765-432",
+        "Compliance": "92%"
     }
-    gov_guidelines = ["Name", "Brand", "Expiry Date", "Batch No", "FSSAI No"]
 
-    return render_template("dashboard.html", extracted=extracted, guidelines=gov_guidelines)
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(200, 800, "Product Report")
 
-# Guidelines page
+    pdf.setFont("Helvetica", 12)
+    y = 750
+    for key, value in product.items():
+        pdf.drawString(50, y, f"{key}: {value}")
+        y -= 20
+
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+
+    return Response(
+        buffer,
+        mimetype='application/pdf',
+        headers={"Content-Disposition": "attachment;filename=Product_Report.pdf"}
+    )
+
+# -----------------------------
+# Reports Page
+# -----------------------------
+@app.route("/report")
+def report():
+    # Example data for reports
+    reports = [
+        {"Name": "AquaFresh", "Brand": "AquaPure Pvt Ltd", "Expiry": "12/2026"},
+        {"Name": "MB Whey", "Brand": "MuscleBoost Pvt Ltd", "Expiry": "12/2026"}
+    ]
+    return render_template("report.html", reports=reports)
+
+# -----------------------------
+# Guidelines Page
+# -----------------------------
 @app.route("/guidelines")
 def guidelines_page():
     extracted = {
@@ -34,10 +80,11 @@ def guidelines_page():
         status = "Present ✅" if field in extracted else "Missing ⚠️"
         status_list.append({"field": field, "status": status})
 
-    # Use lowercase template name for consistency
     return render_template("guidelines.html", status_list=status_list)
 
-# Download PDF
+# -----------------------------
+# Download Guidelines PDF
+# -----------------------------
 @app.route("/download_guidelines")
 def download_guidelines():
     extracted = {
@@ -77,5 +124,16 @@ def download_guidelines():
         headers={"Content-Disposition": "attachment;filename=Guidelines_Report.pdf"}
     )
 
+# -----------------------------
+# Optional: Logout Route
+# -----------------------------
+@app.route("/logout")
+def logout():
+    # Implement session clearing here if using login
+    return redirect(url_for('dashboard'))
+
+# -----------------------------
+# Run the app
+# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)

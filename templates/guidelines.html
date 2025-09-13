@@ -132,12 +132,13 @@
   <div class="sidebar">
     <h2>VigyanTram</h2>
     <nav>
-      <a href="/">Dashboard</a>
-      <a href="upload.html">Upload</a>
-      <a href="reports.html">Reports</a>
-      <a href="">Guidelines</a>
-      <a href="profile.html">Profile</a>
-      <a href="#">Logout</a>
+    <nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/report">Reports</a>
+      <a href="{{ url_for('guidelines_page') }}">Guidelines</a>
+      <a href="/profile">Profile</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
     </nav>
   </div>
 

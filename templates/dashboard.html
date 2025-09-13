@@ -10,13 +10,13 @@
       background: #f4f6fb;
       display: flex;
       height: 100vh;
-      overflow: hidden;
       color: #333;
     }
 
     /* Sidebar */
     .sidebar {
       width: 240px;
+      height: auto;
       background: #2f3c7e;
       color: white;
       display: flex;
@@ -72,27 +72,38 @@
     .dashboard {
       flex: 1;
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
       padding: 20px;
     }
-    .image-container {
-      background: white;
+
+    /* Left Column (stacked images) */
+    .image-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .product-image {
+      background: #fff;
+      padding: 15px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
+      text-align: center;
     }
-    .image-container img {
-      max-width: 95%;
-      max-height: 95%;
+    .product-image img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .product-image p {
+      margin-top: 8px;
+      font-weight: 500;
+      color: #2f3c7e;
     }
 
+    /* Right Column */
     .right-col {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
 
@@ -104,7 +115,7 @@
       position: relative;
     }
     .card h3 {
-      margin: 0 0 10px;
+      margin: 0 0 15px;
       color: #2f3c7e;
     }
 
@@ -112,10 +123,10 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 50px; /* space for button */
+      margin-bottom: 40px;
     }
     table th, table td {
-      padding: 8px;
+      padding: 10px;
       border-bottom: 1px solid #ddd;
     }
     table th {
@@ -153,7 +164,7 @@
       justify-content: center;
       font-weight: bold;
       color: #2f3c7e;
-      margin: 20px auto;
+      margin: 20px auto 0;
       font-size: 18px;
     }
   </style>
@@ -162,14 +173,14 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>VigyanTram</h2>
-    <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">Upload</a>
-      <a href="#">Reports</a>
-      <a href="{{ url_for('guidelines_page') }}">Guidelines</a>
-      <a href="#">Profile</a>
-      <a href="#">Logout</a>
-    </nav>
+<nav>
+  <a href="/dashboard">Dashboard</a>
+  <a href="{{ url_for('report') }}">Reports</a>  <!-- Updated -->
+  <a href="{{ url_for('guidelines_page') }}">Guidelines</a>
+  <a href="/profile">Profile</a>
+  <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
+
   </div>
 
   <!-- Main Content -->
@@ -182,28 +193,36 @@
 
     <!-- Dashboard Grid -->
     <div class="dashboard">
-      <!-- Left: Product Image -->
-      <div class="image-container">
-        <img src="{{ url_for('static', filename='water.png') }}" alt="Water Bottle">
+      <!-- Left: Product Images stacked -->
+      <div class="image-stack">
+        <div class="product-image">
+          <img src="{{ url_for('static', filename='front.jpeg') }}" alt="Front View">
+          <p>Front View</p>
+        </div>
+        <div class="product-image">
+          <img src="{{ url_for('static', filename='back.png') }}" alt="Back View">
+          <p>Back View</p>
+        </div>
       </div>
 
       <!-- Right: Details + Guidelines -->
       <div class="right-col">
         <!-- Extracted Details -->
-        <div class="card">
-          <h3>Extracted Details</h3>
-          <p><b>Name:</b> Mineral Water</p>
-          <p><b>Brand:</b> AquaFresh</p>
-          <p><b>Expiry:</b> 25/08/2026</p>
-          <p><b>MRP:</b> ₹25</p>
-          <p><b>Manufacturer:</b> AquaPure Pvt. Ltd.</p>
-          <p><b>Customer Care:</b> 1800-123-456</p>
-          <div class="progress-circle">85%</div>
-        </div>
+   <div class="card">
+  <h3>Extracted Details</h3>
+  <p><b>Name:</b> MB Whey</p>
+  <p><b>Brand:</b> MuscleBoost</p>
+  <p><b>Expiry:</b> 12/12/2026</p>
+  <p><b>MRP:</b> ₹1,499</p>
+  <p><b>Manufacturer:</b> MuscleBoost Pvt. Ltd.</p>
+  <p><b>Customer Care:</b> 1800-765-432</p>
+  <div class="progress-circle">92%</div>
+</div>
+
 
         <!-- Government Guidelines -->
         <div class="card">
-          <h3>Government Guidelines</h3>
+          <h3>Compliance Status </h3>
           <table>
             <tr><th>Field</th><th>Status</th></tr>
             <tr><td>Name</td><td>✅</td></tr>
@@ -213,7 +232,8 @@
             <tr><td>Batch No.</td><td>⚠️ Missing</td></tr>
             <tr><td>ISI Mark</td><td>⚠️ Missing</td></tr>
           </table>
-          <button class="export-btn">⬇ Export Report</button>
+         <a href="{{ url_for('download_report') }}" class="export-btn" target="_blank">⬇ Export Report</a>
+
         </div>
       </div>
     </div>
