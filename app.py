@@ -1,17 +1,30 @@
-from flask import Flask, render_template, Response, url_for
+from flask import Flask, render_template, Response, url_for, redirect
 from reportlab.pdfgen import canvas
 from io import BytesIO
+
 app = Flask(__name__)
 
 # -----------------------------
-# Dashboard / Home
+# Home / Dashboard
 # -----------------------------
+@app.route("/")
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
 
 # -----------------------------
-# Export PDF route
+# Reports Page
+# -----------------------------
+@app.route("/report")
+def report():
+    reports = [
+        {"Name": "AquaFresh", "Brand": "AquaPure Pvt Ltd", "Expiry": "12/2026"},
+        {"Name": "MB Whey", "Brand": "MuscleBoost Pvt Ltd", "Expiry": "12/2026"}
+    ]
+    return render_template("report.html", reports=reports)
+
+# -----------------------------
+# Export Report PDF
 # -----------------------------
 @app.route("/download_report")
 def download_report():
@@ -19,7 +32,6 @@ def download_report():
     pdf = canvas.Canvas(buffer)
     pdf.setTitle("Product Report")
 
-    # Sample product details (you can pass dynamic data here)
     product = {
         "Name": "MB Whey",
         "Brand": "MuscleBoost",
@@ -32,7 +44,6 @@ def download_report():
 
     pdf.setFont("Helvetica-Bold", 16)
     pdf.drawString(200, 800, "Product Report")
-
     pdf.setFont("Helvetica", 12)
     y = 750
     for key, value in product.items():
@@ -50,18 +61,6 @@ def download_report():
     )
 
 # -----------------------------
-# Reports Page
-# -----------------------------
-@app.route("/report")
-def report():
-    # Example data for reports
-    reports = [
-        {"Name": "AquaFresh", "Brand": "AquaPure Pvt Ltd", "Expiry": "12/2026"},
-        {"Name": "MB Whey", "Brand": "MuscleBoost Pvt Ltd", "Expiry": "12/2026"}
-    ]
-    return render_template("report.html", reports=reports)
-
-# -----------------------------
 # Guidelines Page
 # -----------------------------
 @app.route("/guidelines")
@@ -74,7 +73,6 @@ def guidelines_page():
     }
     gov_guidelines = ["Name", "Brand", "Expiry Date", "Batch No", "FSSAI No"]
 
-    # Prepare status for display
     status_list = []
     for field in gov_guidelines:
         status = "Present ✅" if field in extracted else "Missing ⚠️"
@@ -101,7 +99,6 @@ def download_guidelines():
 
     pdf.setFont("Helvetica-Bold", 16)
     pdf.drawString(200, 800, "Guidelines Report")
-
     pdf.setFont("Helvetica", 12)
     y = 750
     pdf.drawString(50, y, "Field")
@@ -129,7 +126,7 @@ def download_guidelines():
 # -----------------------------
 @app.route("/logout")
 def logout():
-    # Implement session clearing here if using login
+    # If using login sessions, implement session clearing here
     return redirect(url_for('dashboard'))
 
 # -----------------------------
